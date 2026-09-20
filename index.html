@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="" class="dark" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="./Pai.png">
+<title id="page-title">P-A-I Dashboard</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Google Fonts Mulish -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Mulish', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    :root {
+        --bg-color: #09090b;
+        --text-color: #f4efea;
+        --card-bg: rgba(24, 24, 27, 0.6);
+        --border-color: #27272a;
+        --status-bg: rgba(6, 78, 59, 0.4);
+        --status-text: #34d399;
+        --status-border: rgba(52, 211, 153, 0.3);
+    }
+    html.light {
+        --bg-color: #f8fafc;
+        --text-color: #0f172a;
+        --card-bg: #ffffff;
+        --border-color: #cbd5e1;
+        --status-bg: #f0fdf4;
+        --status-text: #15803d;
+        --status-border: #bbf7d0;
+    }
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+    .custom-card {
+        background-color: var(--card-bg);
+        border-color: var(--border-color);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+    .status-badge {
+        background-color: var(--status-bg);
+        color: var(--status-text);
+        border-color: var(--status-border);
+    }
+</style>
+</head>
+<body class="min-h-full flex flex-col antialiased">
+
+<!-- Header -->
+<header class="sticky top-0 z-40 w-full border-b custom-card backdrop-blur bg-opacity-85">
+<div class="container mx-auto flex h-[52px] max-w-6xl items-center justify-between gap-3 px-5">
+<a class="flex items-center gap-3" href="#">
+<svg width="28" height="21" viewBox="0 0 33 24" fill="none">
+<path d="M1.31048 16.547C1.31048 16.547 10.2894 22.927 10.8352 23.2451C11.3623 23.5632 12.1341 23.638 12.8117 23.3761C13.4894 23.1141 13.9976 22.5154 14.1482 21.9167C14.3176 21.318 16.3694 10.5412 16.3694 10.5412C16.3882 10.3915 16.4447 9.96116 16.2188 9.54955C15.8988 8.98826 15.1835 8.6889 14.5435 8.876C14.0353 9.02567 13.7717 9.39987 13.6964 9.53084C13.5835 9.73665 13.3764 10.0734 13 10.3728C12.7176 10.5973 12.4352 10.7283 12.3035 10.7844C11.1552 11.2521 9.87523 10.8592 9.14111 9.92374C8.68934 9.34374 7.87993 9.11922 7.16463 9.39987C6.44933 9.68052 6.03521 10.4102 6.09168 11.1399C6.22345 12.2999 5.56462 13.4599 4.39756 13.9276C3.77638 14.1709 3.11755 14.1709 2.53402 13.9838C2.40225 13.9463 1.93166 13.8341 1.46107 14.096C0.877536 14.3954 0.576358 15.1064 0.726947 15.7425C0.839889 16.1728 1.17871 16.4535 1.31048 16.547Z" fill="#FF9538"></path>
+<path d="M16.2751 2.57006C16.2751 2.57006 19.4752 13.085 19.701 13.6463C19.9269 14.2263 20.4916 14.7501 21.1881 14.9559C21.8846 15.1617 22.6563 14.9934 23.1458 14.6192C23.6352 14.245 31.8987 6.96686 31.8987 6.96686C32.0117 6.87331 32.3129 6.55525 32.3882 6.0875C32.4823 5.45137 32.087 4.77782 31.4846 4.53459C30.9952 4.34749 30.5434 4.47846 30.4117 4.53459C30.2046 4.62814 29.8281 4.75911 29.3576 4.77782C28.9811 4.79653 28.6987 4.72169 28.5481 4.68427C27.3623 4.34749 26.5717 3.26233 26.5717 2.08361C26.5528 1.35393 26.0634 0.680376 25.3293 0.474568C24.5764 0.268761 23.8046 0.586827 23.4093 1.20425C22.7881 2.21458 21.5646 2.71974 20.3599 2.38297C19.7199 2.19587 19.1928 1.80296 18.854 1.2978C18.7599 1.18554 18.4587 0.811344 17.9316 0.717795C17.2916 0.605537 16.5951 0.979732 16.3316 1.55974C16.1245 2.00877 16.2375 2.42039 16.2751 2.57006Z" fill="#FF9538"></path>
+</svg>
+<span class="text-[15px] font-semibold">P A I</span>
+</a>
+<nav class="flex items-center gap-3">
+<span class="font-mono text-xs px-2.5 py-1 rounded border status-badge">Status: Online</span>
+<!-- Tombol Toggle Dark/Light Mode -->
+<button onclick="toggleTheme()" id="themeBtn" class="text-xs font-medium px-3 py-1.5 rounded-lg border custom-card transition cursor-pointer">
+🌙 / ☀️ Mode
+</button>
+</nav>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
+<div class="flex flex-col gap-6">
+<!-- Title Section -->
+<div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+<div>
+<h1 class="text-xl font-semibold tracking-tight">P-A-I Sales Dashboard</h1>
+<p class="text-zinc-400 text-xs mt-1">Dashboard mandiri untuk analitik penjualan.</p>
+</div>
+<div class="text-xs text-zinc-400 custom-card border px-3 py-2 rounded-md">
+Periode: Nov 1, 2025 — Dec 29, 2025
+</div>
+</div>
+
+<!-- Metric Cards -->
+<section class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Trips / Orders</span>
+<span class="text-lg font-bold">24,580</span>
+</div>
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Revenue</span>
+<span class="text-lg font-bold text-emerald-400">Rp 482.5M</span>
+</div>
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Customers</span>
+<span class="text-lg font-bold">12,340</span>
+</div>
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Avg Order</span>
+<span class="text-lg font-bold">Rp 19.6K</span>
+</div>
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Conversion</span>
+<span class="text-lg font-bold">4.2%</span>
+</div>
+<div class="custom-card border rounded-xl p-3 flex flex-col gap-1">
+<span class="text-zinc-400 text-[10px] font-medium uppercase tracking-wide">Avg Dist.</span>
+<span class="text-lg font-bold">4.5 km</span>
+</div>
+</section>
+
+<!-- Charts Section Simulation -->
+<section class="grid gap-4 lg:grid-cols-3">
+<div class="custom-card border rounded-xl p-4 lg:col-span-2 flex flex-col justify-between h-[220px]">
+<div>
+<h2 class="font-semibold text-sm">Daily Order Volume</h2>
+<p class="text-zinc-400 text-[11px]">Tren transaksi harian selama periode aktif.</p>
+</div>
+<div class="flex items-end gap-2 h-28 pt-4">
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 40%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 65%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 50%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 80%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 95%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 70%;"></div>
+<div class="bg-orange-500/80 w-full rounded-t" style="height: 85%;"></div>
+</div>
+</div>
+<div class="custom-card border rounded-xl p-4 flex flex-col justify-between h-[220px]">
+<div>
+<h2 class="font-semibold text-sm">Top Pickup Zones</h2>
+<p class="text-zinc-400 text-[11px]">Wilayah dengan volume tertinggi.</p>
+</div>
+<div class="space-y-2 text-xs">
+<div>
+<div class="flex justify-between mb-1"><span>Bekasi</span><span>32K</span></div>
+<div class="w-full bg-zinc-800 h-1.5 rounded"><div class="bg-red-500 h-1.5 rounded" style="width: 65%;"></div></div>
+</div>
+<div>
+<div class="flex justify-between mb-1"><span>Jakarta</span><span>38K</span></div>
+<div class="w-full bg-zinc-800 h-1.5 rounded"><div class="bg-red-500 h-1.5 rounded" style="width: 70%;"></div></div>
+</div>
+<div>
+<div class="flex justify-between mb-1"><span>Tangerang</span><span>45K</span></div>
+<div class="w-full bg-zinc-800 h-1.5 rounded"><div class="bg-red-500 h-1.5 rounded" style="width: 85%;"></div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Grafik Kurva X-Y (Line Chart) -->
+<section class="custom-card border rounded-xl p-4 flex flex-col gap-3">
+<div>
+<h2 class="font-semibold text-sm">Grafik Kurva Tren Penjualan Harian</h2>
+<p class="text-zinc-400 text-[11px]">Visualisasi sumbu X (Tanggal) dan sumbu Y (Jumlah Transaksi).</p>
+</div>
+<div class="relative h-[250px] w-full">
+<canvas id="salesCurveChart"></canvas>
+</div>
+</section>
+
+<!-- Tabel Data Penjualan -->
+<section class="custom-card border rounded-xl p-4 flex flex-col gap-3">
+<div>
+<h2 class="font-semibold text-sm">Rincian Wilayah Penjualan (Top Zones)</h2>
+<p class="text-zinc-400 text-[11px]">Daftar performa penjualan berdasarkan wilayah.</p>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead class="border-b border-zinc-800 text-zinc-400 uppercase tracking-wider">
+<tr>
+<th class="p-2.5">Wilayah / Zona</th>
+<th class="p-2.5">Total Pesanan</th>
+<th class="p-2.5">Pendapatan</th>
+<th class="p-2.5">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-zinc-800/60">
+<tr>
+<td class="p-2.5 font-medium">Jakarta</td>
+<td class="p-2.5">8,420</td>
+<td class="p-2.5 text-emerald-400">Rp 180.2M</td>
+<td class="p-2.5"><span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded text-[10px] border border-emerald-800">Aktif</span></td>
+</tr>
+<tr>
+<td class="p-2.5 font-medium">Bogor</td>
+<td class="p-2.5">6,150</td>
+<td class="p-2.5 text-emerald-400">Rp 135.0M</td>
+<td class="p-2.5"><span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded text-[10px] border border-emerald-800">Aktif</span></td>
+</tr>
+<tr>
+<td class="p-2.5 font-medium">Tangerang</td>
+<td class="p-2.5">4,310</td>
+<td class="p-2.5 text-emerald-400">Rp 92.4M</td>
+<td class="p-2.5"><span class="bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded text-[10px] border border-emerald-800">Aktif</span></td>
+</tr>
+<tr>
+<td class="p-2.5 font-medium">Bekasi</td>
+<td class="p-2.5">5,700</td>
+<td class="p-2.5 text-emerald-400">Rp 74.9M</td>
+<td class="p-2.5"><span class="bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded text-[10px]">Normal</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="text-zinc-500 text-[11px] pt-4 border-t border-zinc-800/60 flex items-center gap-2">
+<span>📍 P-A-I Project Dashboard — Siap untuk dideploy.</span>
+</footer>
+</div>
+</main>
+
+<!-- Script untuk Title, Toggle Tema, & Grafik Chart.js -->
+<script>
+    document.getElementById("page-title").innerHTML = "P-A-I Dashboard • " + window.location.hostname;
+
+    const htmlRoot = document.getElementById('htmlRoot');
+    
+    function toggleTheme() {
+        if (htmlRoot.classList.contains('light')) {
+            htmlRoot.classList.remove('light');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            htmlRoot.classList.add('light');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'light') {
+        htmlRoot.classList.add('light');
+    }
+
+    const ctx = document.getElementById('salesCurveChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Nov 1', 'Nov 5', 'Nov 10', 'Nov 15', 'Nov 20', 'Nov 25', 'Nov 30', 'Dec 5', 'Dec 10', 'Dec 15', 'Dec 20', 'Dec 29'],
+            datasets: [{
+                label: 'Volume Transaksi (X-Y)',
+                data: [120, 190, 150, 250, 220, 300, 280, 350, 320, 410, 390, 460],
+                borderColor: '#34d399',
+                backgroundColor: 'rgba(52, 211, 153, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#a8b3c2',
+                        font: { size: 11 }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(150, 150, 150, 0.1)' },
+                    ticks: { color: '#a8b3c2', font: { size: 10 } }
+                },
+                y: {
+                    grid: { color: 'rgba(150, 150, 150, 0.1)' },
+                    ticks: { color: '#a8b3c2', font: { size: 10 } }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
